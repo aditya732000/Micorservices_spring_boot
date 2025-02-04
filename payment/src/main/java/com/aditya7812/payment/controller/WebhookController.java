@@ -1,5 +1,6 @@
 package com.aditya7812.payment.controller;
 
+import com.aditya7812.payment.event.producer.KafkaProducerService;
 import com.aditya7812.payment.model.Payment;
 import com.aditya7812.payment.repository.PaymentRepository;
 import com.stripe.model.Event;
@@ -18,6 +19,7 @@ public class WebhookController {
 
     @Autowired
     private PaymentRepository paymentRepository;
+    private KafkaProducerService kafkaProducerService;
 
     @Value("${stripe.webhook.secret}")
     private String endpointSecret;
@@ -43,6 +45,8 @@ public class WebhookController {
                 paymentOpt.ifPresent(payment -> {
                     payment.setPaymentStatus("SUCCESS");
                     paymentRepository.save(payment);
+                    kafkaProducerService.sendPaymentEvent(payment.getOrderId());
+
                 });
 
                 System.out.println("✅ Payment successful: " + transactionId);
