@@ -45,11 +45,22 @@ public class WebhookController {
                 paymentOpt.ifPresent(payment -> {
                     payment.setPaymentStatus("SUCCESS");
                     paymentRepository.save(payment);
-                    kafkaProducerService.sendPaymentEvent(payment.getOrderId());
-
+                    kafkaProducerService.sendPaymentEvent("payment.success", payment.getUserId());
                 });
 
                 System.out.println("✅ Payment successful: " + transactionId);
+            } else {
+                PaymentIntent paymentIntent = (PaymentIntent) event.getDataObjectDeserializer().getObject().get();
+
+                String transactionId = paymentIntent.getId();
+                Optional<Payment> paymentOpt = paymentRepository.findById(transactionId);
+
+                paymentOpt.ifPresent(payment -> {
+                    payment.setPaymentStatus("FAILED");
+                    paymentRepository.save(payment);
+                    kafkaProducerService.sendPaymentEvent("payment.failed", payment.getOrderId());
+                });
+
             }
 
             return ResponseEntity.ok("Event handled");

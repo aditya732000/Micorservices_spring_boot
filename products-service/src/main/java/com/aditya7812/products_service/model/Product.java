@@ -33,9 +33,8 @@ public class Product {
     @Column(nullable = false)
     private String category;
 
-    @Column(nullable = false)
-    private String imageUrl;
-
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private String image_url = "vdnd";
 }
 

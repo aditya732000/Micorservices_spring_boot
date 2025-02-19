@@ -12,8 +12,8 @@ public class KafkaProducerService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendPaymentEvent(String orderId) {
-        kafkaTemplate.send("payment.success", orderId);
+    public void sendPaymentEvent(String topic, String orderId) {
+        kafkaTemplate.send(topic, orderId);
         System.out.println("✅ Payment event sent to Kafka for Order ID: " + orderId);
     }
 }

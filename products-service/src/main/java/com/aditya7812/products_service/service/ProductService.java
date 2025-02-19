@@ -6,14 +6,18 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.aditya7812.products_service.dto.AddQuantityDTO;
 import com.aditya7812.products_service.dto.ProductDTO;
 import com.aditya7812.products_service.model.Product;
 import com.aditya7812.products_service.repository.ProductRepository;
 
 @Service
 public class ProductService {
+    private final ProductRepository productRepo;
 
-    private ProductRepository productRepo;
+    public ProductService(ProductRepository productRepo) {
+        this.productRepo = productRepo;
+    }
 
     public Product createProduct(ProductDTO dto) {
         Product product = new Product();
@@ -22,8 +26,6 @@ public class ProductService {
         product.setPrice(dto.getPrice());
         product.setStockQuantity(dto.getStockQuantity());
         product.setCategory(dto.getCategory());
-        product.setImageUrl(dto.getImageUrl());
-
         return productRepo.save(product);
     }
     public List<ProductDTO> getAllProducts() {
@@ -34,7 +36,6 @@ public class ProductService {
             dto.setPrice(product.getPrice());
             dto.setStockQuantity(product.getStockQuantity());
             dto.setCategory(product.getCategory());
-            dto.setImageUrl(product.getImageUrl());
             return dto;
         }).collect(Collectors.toList());
     }
@@ -45,6 +46,13 @@ public class ProductService {
 
     public void deleteProduct(String id) {
         productRepo.deleteById(id);
+    }
+
+    public Product addQuantity(AddQuantityDTO dto) {
+        Product product = productRepo.findById(dto.getProductId())
+                            .orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setStockQuantity(dto.getQuantity());
+        return productRepo.save(product);
     }
 
 }
