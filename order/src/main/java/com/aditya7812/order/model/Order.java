@@ -1,5 +1,7 @@
 package com.aditya7812.order.model;
 
+import java.util.List;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +17,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String userId;
-    private Double amount;
-    private String currency;
+
+    @ElementCollection
+    private List<OrderItem> orderItems;
     private String status;  // PENDING, PAID, SHIPPED, CANCELED
 }

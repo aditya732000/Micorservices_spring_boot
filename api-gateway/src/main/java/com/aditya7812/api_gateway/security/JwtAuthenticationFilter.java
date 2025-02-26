@@ -1,4 +1,4 @@
-package com.aditya7812.api_gateway.security;
+/*package com.aditya7812.api_gateway.security;
 
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -34,6 +34,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(@NonNull HttpServletRequest request,@NonNull HttpServletResponse response,@NonNull FilterChain filterChain) throws ServletException, IOException {
         System.out.println("here");
+
         try {
             if (isAuthRequest(request)) {
                 filterChain.doFilter(request, response);
@@ -60,6 +61,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     List<GrantedAuthority> authorities =  jwtUtil.extractAuthoritiesFromToken(token);
                     System.out.println(authorities);
                     setAuthentication(request, username, authorities);
+                    String userId = jwtUtil.getUserIDFromToken(token);
+                    System.out.println(userId);
+                    //requestWrapper.addHeader("X-UserId", userId);
+
                 }
             }
 
@@ -108,4 +113,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         response.setContentType("application/json");
         response.getWriter().write("{\"error\": \"" + error + "\"}");
     }
-}
+}*/

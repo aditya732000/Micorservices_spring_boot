@@ -1,6 +1,6 @@
 spring:
   application:
-    name: user
+    name: user-service
 
   datasource:
     url: jdbc:mysql://localhost:3307/your_database_name

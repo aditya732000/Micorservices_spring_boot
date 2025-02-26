@@ -18,6 +18,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    private String sellerId;
+
     @Column(nullable = false, unique = true)
     private String name;
 

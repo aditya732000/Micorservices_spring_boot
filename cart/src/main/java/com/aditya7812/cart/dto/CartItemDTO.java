@@ -10,9 +10,6 @@ import java.math.BigDecimal;
 @Data
 public class CartItemDTO {
 
-    @NotBlank(message = "User ID is required")
-    private String userId;
-
     @NotBlank(message = "Product ID is required")
     private String productId;
 

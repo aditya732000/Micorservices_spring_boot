@@ -19,17 +19,23 @@ public class ProductService {
         this.productRepo = productRepo;
     }
 
-    public Product createProduct(ProductDTO dto) {
+
+    public List<Product> getAllProducts() {
+        return productRepo.findAll();
+    }
+    public Product createProduct(ProductDTO dto, String userId) {
         Product product = new Product();
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
         product.setStockQuantity(dto.getStockQuantity());
         product.setCategory(dto.getCategory());
+        product.setSellerId(userId);
         return productRepo.save(product);
     }
-    public List<ProductDTO> getAllProducts() {
-        return productRepo.findAll().stream().map(product -> {
+    public List<Product> getSellerProducts(String sellerId) {
+        return productRepo.findBySellerId(sellerId);
+       /*  return productRepo.findBySellerId(sellerId).stream().map(product -> {
             ProductDTO dto = new ProductDTO();
             dto.setName(product.getName());
             dto.setDescription(product.getDescription());
@@ -37,7 +43,7 @@ public class ProductService {
             dto.setStockQuantity(product.getStockQuantity());
             dto.setCategory(product.getCategory());
             return dto;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList());*/
     }
 
     public Optional<Product> getProductById(String id) {

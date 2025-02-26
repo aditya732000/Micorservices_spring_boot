@@ -8,6 +8,7 @@ import com.aditya7812.cart.model.CartItem;
 import com.aditya7812.cart.repository.CartItemRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,20 +17,26 @@ public class CartService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    public CartItem addToCart(CartItemDTO dto) {
-        CartItem cartItem = new CartItem();
-        cartItem.setUserId(dto.getUserId());
-        cartItem.setProductId(dto.getProductId());
-        cartItem.setQuantity(dto.getQuantity());
-        cartItem.setPrice(dto.getPrice());
+    public CartItem addToCart(CartItemDTO dto, String userId) {
+        Optional<CartItem> existingCartItem = cartItemRepository.findByUserIdAndProductId(userId, dto.getProductId());
 
-        return cartItemRepository.save(cartItem);
+        if (existingCartItem.isPresent()) {
+            CartItem cartItem = existingCartItem.get();
+            cartItem.setQuantity(cartItem.getQuantity() + dto.getQuantity());
+            return cartItemRepository.save(cartItem);
+        } else {
+            CartItem newCartItem = new CartItem();
+            newCartItem.setUserId(userId);
+            newCartItem.setProductId(dto.getProductId());
+            newCartItem.setQuantity(dto.getQuantity());
+            newCartItem.setPrice(dto.getPrice());
+            return cartItemRepository.save(newCartItem);
+        }
     }
 
     public List<CartItemDTO> getCartItems(String userId) {
         return cartItemRepository.findByUserId(userId).stream().map(cartItem -> {
             CartItemDTO dto = new CartItemDTO();
-            dto.setUserId(cartItem.getUserId());
             dto.setProductId(cartItem.getProductId());
             dto.setQuantity(cartItem.getQuantity());
             dto.setPrice(cartItem.getPrice());

@@ -5,7 +5,8 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server : {
-    allowedHosts : ["5173-aditya7812-ecommercemic-h7ba9h2xbki.ws-us117.gitpod.io"],
+    allowedHosts : ["5174-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io"],
+    port:5174
   }
 
 })

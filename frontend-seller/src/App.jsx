@@ -7,7 +7,8 @@ import CreateProduct from './pages/CreateProduct'
 import SidebarLayout from './components/SidebarLayout'
 import SignUp from './pages/SignUp'
 import RequireAuth from './components/RequireAuth'
-import ProductsList from './pages/Products'
+import ProductsList from './pages/ProductsList'
+import ProductDetails from './pages/ProductDetails'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
             <Route path="/orders" element={<Orders />} />
             <Route path="/products" element={<ProductsList />} />
             <Route path="/create-product" element={<CreateProduct />} />
+            <Route path="/product/:productId" element={<ProductDetails/>}/>
         </Route>
       </Route>
     </Routes>
