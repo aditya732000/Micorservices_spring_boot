@@ -22,7 +22,7 @@ public class KafkaConsumerService {
         System.out.println("✅ Payment successful for Order ID: " + orderId);
 
         // Find the order by orderId and update status to "PAID"
-        Optional<Order> orderOpt = orderRepository.findByOrderId(orderId);
+        Optional<Order> orderOpt = orderRepository.findById(Long.parseLong(orderId));
         orderOpt.ifPresent(order -> {
             order.setStatus("PAID");
             orderRepository.save(order);

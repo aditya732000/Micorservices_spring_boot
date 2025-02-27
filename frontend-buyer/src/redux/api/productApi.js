@@ -13,11 +13,22 @@ export const productApi = apiSlice.injectEndpoints({
         transformResponse: (response, meta, arg) => response.data,
 
       })
+    }),
+
+    checkStockAvailability: builder.mutation({
+      query: (stockRequest) => ({
+        url: "product/check-stock",
+        method: "POST",
+        body: stockRequest,
+        transformResponse: (response, meta, arg) => response.data,
+      })
+
     })
   }),
 });
 
 export const {
   useListProductsQuery,
-  useProductDetailsQuery
+  useProductDetailsQuery,
+  useCheckStockAvailabilityMutation
 } = productApi;

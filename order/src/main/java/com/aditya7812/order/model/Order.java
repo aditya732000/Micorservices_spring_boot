@@ -16,9 +16,15 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userId;
+    private Long userId;
+    private Long productId;
+    private int quantity;
+    private int price; 
 
-    @ElementCollection
-    private List<OrderItem> orderItems;
+    private String fullName;
+    private String address;
+    private String city;
+    private int zipCode;
+
     private String status;  // PENDING, PAID, SHIPPED, CANCELED
 }

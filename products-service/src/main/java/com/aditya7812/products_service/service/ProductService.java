@@ -1,6 +1,7 @@
 package com.aditya7812.products_service.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -8,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.aditya7812.products_service.dto.AddQuantityDTO;
 import com.aditya7812.products_service.dto.ProductDTO;
+import com.aditya7812.products_service.dto.StockProduct;
+import com.aditya7812.products_service.dto.StockRequestDTO;
 import com.aditya7812.products_service.model.Product;
 import com.aditya7812.products_service.repository.ProductRepository;
 
@@ -59,6 +62,33 @@ public class ProductService {
                             .orElseThrow(() -> new RuntimeException("Product not found"));
         product.setStockQuantity(dto.getQuantity());
         return productRepo.save(product);
+    }
+
+    public Boolean checkStockAvailability(StockRequestDTO stockRequest) {
+        System.out.println(stockRequest.getProducts().getFirst());
+        List<String> productIds = stockRequest.getProducts().stream()
+                .map(StockProduct::getProductId)
+                .collect(Collectors.toList());
+        List<Product> allp = productRepo.findAllProductListById(productIds);
+        System.out.println(allp.size());
+
+        Map<String, Integer> stockMap = productRepo.findAllProductListById(productIds)
+            .stream()
+            .collect(Collectors.toMap(Product::getId, Product::getStockQuantity));
+        
+        
+
+        for (StockProduct product : stockRequest.getProducts()) {
+            System.out.println(product.getProductId());
+            int availableStock = stockMap.getOrDefault(product.getProductId(), 0);
+            System.out.println(availableStock);
+            if (availableStock < product.getQuantity()) {
+                return false; // Insufficient stock for at least one product
+            }
+        }
+
+        return true;
+
     }
 
 }

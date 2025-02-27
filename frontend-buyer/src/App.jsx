@@ -7,6 +7,7 @@ import RequireAuth from "./components/RequireAuth";
 import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
+import ShippingInfo from "./pages/ShippingInfo";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/products" element={<ProductList />} />
         <Route path="/product/:productId" element={<ProductDetails/>}/>
         <Route path='/cart' element={<Cart/>} />
+        <Route path="/address-info" element={<ShippingInfo/>}/>
       </Route>
     </Routes>
   );

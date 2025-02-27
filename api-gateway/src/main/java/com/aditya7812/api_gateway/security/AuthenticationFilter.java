@@ -27,6 +27,7 @@ public class AuthenticationFilter implements GatewayFilter {
         ServerHttpRequest request = exchange.getRequest();
         System.out.println("inside filter");
 
+
         if (routerValidator.isSecured.test(request)) {
             System.out.println("secured route");
             if (this.isAuthMissing(request))
@@ -36,8 +37,15 @@ public class AuthenticationFilter implements GatewayFilter {
 
             if (jwtUtil.isInvalid(token))
                 return this.onError(exchange, "Authorization header is invalid", HttpStatus.UNAUTHORIZED);
+            
+            Claims claims = jwtUtil.getAllClaimsFromToken(token);
 
-            this.populateRequestWithHeaders(exchange, token);
+            ServerHttpRequest modifiedRequest = exchange.getRequest().mutate()
+                .header("userId", String.valueOf(claims.get("userId")))  // Add username to headers
+                .header("role", String.valueOf(claims.get("role")))  // Add role to headers
+                .build();
+
+            return chain.filter(exchange.mutate().request(modifiedRequest).build());
         }
         return chain.filter(exchange);
     }
@@ -66,6 +74,7 @@ public class AuthenticationFilter implements GatewayFilter {
 
     private void populateRequestWithHeaders(ServerWebExchange exchange, String token) {
         Claims claims = jwtUtil.getAllClaimsFromToken(token);
+        System.out.println(String.valueOf(claims.get("userId")));
         exchange.getRequest().mutate()
                 .header("id", String.valueOf(claims.get("userId")))
                 .header("role", String.valueOf(claims.get("role")))
