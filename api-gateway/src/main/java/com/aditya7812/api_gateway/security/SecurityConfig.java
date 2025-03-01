@@ -47,8 +47,8 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsFilter() {
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("https://5173-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io", "https://5174-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io")); // Change to your frontend URL
+    CorsConfiguration config = new CorsConfiguration();
+        config.setAllowedOrigins(List.of("https://5173-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io", "https://5174-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io", "https://5174-aditya7812-ecommercemic-5oxq92yh6rp.ws-us118.gitpod.io", "https://5173-aditya7812-ecommercemic-5oxq92yh6rp.ws-us118.gitpod.io")); // Change to your frontend URL
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

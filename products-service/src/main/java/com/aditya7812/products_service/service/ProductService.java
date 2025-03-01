@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.aditya7812.products_service.dto.AddQuantityDTO;
 import com.aditya7812.products_service.dto.ProductDTO;
@@ -22,7 +23,6 @@ public class ProductService {
         this.productRepo = productRepo;
     }
 
-
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
@@ -31,22 +31,13 @@ public class ProductService {
         product.setName(dto.getName());
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
-        product.setStockQuantity(dto.getStockQuantity());
+        product.setQuantity(dto.getQuantity());
         product.setCategory(dto.getCategory());
         product.setSellerId(userId);
         return productRepo.save(product);
     }
     public List<Product> getSellerProducts(String sellerId) {
         return productRepo.findBySellerId(sellerId);
-       /*  return productRepo.findBySellerId(sellerId).stream().map(product -> {
-            ProductDTO dto = new ProductDTO();
-            dto.setName(product.getName());
-            dto.setDescription(product.getDescription());
-            dto.setPrice(product.getPrice());
-            dto.setStockQuantity(product.getStockQuantity());
-            dto.setCategory(product.getCategory());
-            return dto;
-        }).collect(Collectors.toList());*/
     }
 
     public Optional<Product> getProductById(String id) {
@@ -60,7 +51,7 @@ public class ProductService {
     public Product addQuantity(AddQuantityDTO dto) {
         Product product = productRepo.findById(dto.getProductId())
                             .orElseThrow(() -> new RuntimeException("Product not found"));
-        product.setStockQuantity(dto.getQuantity());
+        product.setQuantity(dto.getQuantity());
         return productRepo.save(product);
     }
 
@@ -74,21 +65,37 @@ public class ProductService {
 
         Map<String, Integer> stockMap = productRepo.findAllProductListById(productIds)
             .stream()
-            .collect(Collectors.toMap(Product::getId, Product::getStockQuantity));
+            .collect(Collectors.toMap(Product::getId, Product::getQuantity));
         
-        
-
         for (StockProduct product : stockRequest.getProducts()) {
             System.out.println(product.getProductId());
             int availableStock = stockMap.getOrDefault(product.getProductId(), 0);
             System.out.println(availableStock);
             if (availableStock < product.getQuantity()) {
-                return false; // Insufficient stock for at least one product
+                return false;
             }
         }
 
         return true;
 
+    }
+
+    @Transactional
+    public void deductQuantity(String productId, int quantityToDeduct) {
+        Optional<Product> optionalProduct = productRepo.findById(productId);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+
+            if (product.getQuantity() >= quantityToDeduct) {
+                product.setQuantity(product.getQuantity() - quantityToDeduct);
+                productRepo.save(product);
+                System.out.println("✅ Quantity updated successfully for product ID: " + productId);
+            } else {
+                System.out.println("❌ Not enough stock for product ID: " + productId);
+            }
+        } else {
+            System.out.println("❌ Product not found with ID: " + productId);
+        }
     }
 
 }

@@ -30,6 +30,7 @@ public class CartService {
             newCartItem.setProductId(dto.getProductId());
             newCartItem.setQuantity(dto.getQuantity());
             newCartItem.setPrice(dto.getPrice());
+            newCartItem.setSellerId(dto.getSellerId());
             return cartItemRepository.save(newCartItem);
         }
     }

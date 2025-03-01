@@ -11,7 +11,10 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.1",
+    "@stripe/react-stripe-js": "^3.1.1",
+    "@stripe/stripe-js": "^5.7.0",
     "@tailwindcss/vite": "^4.0.9",
+    "lucide-react": "^0.476.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",

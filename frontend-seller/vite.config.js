@@ -8,6 +8,6 @@ export default defineConfig({
     tailwindcss()
   ],
   server : {
-    allowedHosts : ["5173-aditya7812-ecommercemic-h7ba9h2xbki.ws-us117.gitpod.io"]
+    allowedHosts : ["5173-aditya7812-ecommercemic-h7ba9h2xbki.ws-us117.gitpod.io", "5173-aditya7812-ecommercemic-5oxq92yh6rp.ws-us118.gitpod.io"]
   }
 })

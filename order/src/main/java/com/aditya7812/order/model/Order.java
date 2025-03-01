@@ -14,10 +14,10 @@ import lombok.*;
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private Long userId;
-    private Long productId;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+    private String userId;
+    private String productId;
     private int quantity;
     private int price; 
 

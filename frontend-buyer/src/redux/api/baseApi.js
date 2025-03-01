@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://8083-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io/api/",
+  baseUrl: "https://8083-aditya7812-ecommercemic-5oxq92yh6rp.ws-us118.gitpod.io/api", //"https://8083-aditya7812-ecommercemic-h7ba9h2xbki.ws-us118.gitpod.io/api/",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
@@ -15,7 +15,6 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result)
   return result;
 };
 

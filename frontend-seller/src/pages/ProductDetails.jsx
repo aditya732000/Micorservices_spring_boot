@@ -15,7 +15,7 @@ export default function ProductDetails() {
       <p className="text-gray-600 mb-4">{product.description}</p>
       <p className="text-gray-800 mb-2">Category: {product.category}</p>
       <p className="text-gray-800 mb-2">Price: ${product.price}</p>
-      <p className="text-gray-800 mb-2">Stock: {product.stockQuantity}</p>
+      <p className="text-gray-800 mb-2">Stock: {product.quantity}</p>
     </div>
   );
 }

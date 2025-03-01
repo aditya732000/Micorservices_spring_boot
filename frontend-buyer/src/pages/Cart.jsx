@@ -41,7 +41,7 @@ export default function Cart() {
             <CartItem key={cartItem.productId} cartItem={cartItem} />
           ))}
         </ul>
-        <button onClick={checkAvailability}>
+        <button onClick={checkAvailability} className="cursor-pointer bg-blue-400">
           Checkout
         </button>
         </>

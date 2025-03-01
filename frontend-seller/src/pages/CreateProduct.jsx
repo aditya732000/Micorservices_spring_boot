@@ -7,7 +7,7 @@ export default function CreateProduct() {
     description: '',
     category: '',
     price: '',
-    stockQuantity: '',
+    quantity: '',
   });
 
   const [createProduct] = useCreateProductMutation()
@@ -73,8 +73,8 @@ export default function CreateProduct() {
           <label className="block text-gray-700">Stock Quantity</label>
           <input 
             type="number" 
-            name="stockQuantity" 
-            value={product.stockQuantity} 
+            name="quantity" 
+            value={product.quantity} 
             onChange={handleChange} 
             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />

@@ -1,20 +1,21 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import { useCreateOrderMutation } from "../redux/api/orderApi";
+import { loadStripe } from "@stripe/stripe-js";
+import { useCreateCheckoutSessionMutation } from "../redux/api/paymentApi";
 
 const ShippingInfo = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const selectedProducts = useSelector(state => state.product.selectedProducts);
-
+    const [createCheckoutSession] = useCreateCheckoutSessionMutation();
     const [shippingDetails, setShippingDetails] = useState({
         fullName: "",
         address: "",
         city: "",
         state: "",
         zipCode: "",
-        country: "",
     });
+
+    const [createOrder] = useCreateOrderMutation();
 
     const handleChange = (e) => {
         setShippingDetails({ ...shippingDetails, [e.target.name]: e.target.value });
@@ -22,42 +23,43 @@ const ShippingInfo = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        // Save shipping info in Redux
-
-        // Prepare data to send to backend
         const orderData = {
             shippingInfo: shippingDetails,
-            products: selectedProducts.map(product => ({
-                productId: product.id,
+            orderItems: selectedProducts.map(product => ({
+                productId: product.productId,
                 quantity: product.quantity,
                 price: product.price
             }))
         };
 
         try {
-            /*const response = await axios.post("http://localhost:8080/order", orderData, {
-                headers: { "Content-Type": "application/json" }
-            });
+            const response = await createOrder(orderData).unwrap();
+            const orderItems = response.map(order => ({
+                orderId: order.id,
+                productId: order.productId,
+                quantity: order.quantity,
+                price: order.price
+            }));
 
-            if (response.status === 200) {
-                alert("Order placed successfully!");
-                navigate("/success"); // Redirect to success page
-            }*/
+            const stripe = await loadStripe("pk_test_51OPRpGSFQ7VcCJN2VrENXikLBJ6WYmf8B1rxz67aNPSpEXjubzu1TenBp6626vOAH6x4BC7wbW0Sh2FYWx5a558v00SLewJ8HH");
+            const checkoutResponse = await createCheckoutSession(orderItems).unwrap();
+
+            await stripe.redirectToCheckout({ sessionId: checkoutResponse.id });
         } catch (error) {
             console.error("Error placing order:", error.response ? error.response.data : error.message);
         }
     };
 
     return (
-        <div>
-            <h2>Shipping Information</h2>
-            <form onSubmit={handleSubmit} className='block'>
-                <input type="text" name="fullName" placeholder="Full Name" required onChange={handleChange} className="w-full" />
-                <input type="text" name="address" placeholder="Address" required onChange={handleChange} className='w-full' />
-                <input type="text" name="city" placeholder="City" required onChange={handleChange} />
-                <input type="text" name="zipCode" placeholder="Zip Code" required onChange={handleChange} />
-                <button type="submit">Place Order</button>
+        <div className="max-w-lg mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+            <h2 className="text-2xl font-semibold text-gray-700 mb-4">Shipping Information</h2>
+            <form onSubmit={handleSubmit} className='space-y-4'>
+                <input type="text" name="fullName" placeholder="Full Name" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="address" placeholder="Address" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="city" placeholder="City" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="state" placeholder="State" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <input type="text" name="zipCode" placeholder="Zip Code" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+                <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition duration-300">Place Order</button>
             </form>
         </div>
     );

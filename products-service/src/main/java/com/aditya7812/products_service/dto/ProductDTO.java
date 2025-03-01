@@ -22,7 +22,7 @@ public class ProductDTO {
     private BigDecimal price;
 
     @Min(value = 0, message = "Stock must be non-negative")
-    private int stockQuantity;
+    private int quantity;
 
     @NotBlank(message = "Category is required")
     private String category;

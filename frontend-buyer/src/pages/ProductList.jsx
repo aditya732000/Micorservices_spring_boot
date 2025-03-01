@@ -18,7 +18,7 @@ export default function ProductList() {
               <p className="text-gray-600">{product.description}</p>
               <p className="text-gray-800">Category: {product.category}</p>
               <p className="text-gray-800">Price: ${product.price}</p>
-              <p className="text-gray-800">Stock: {product.stockQuantity}</p>
+              <p className="text-gray-800">Stock: {product.quantity}</p>
             </Link>
           ))}
         </ul>

@@ -8,12 +8,14 @@ import ProductList from "./pages/ProductList";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import ShippingInfo from "./pages/ShippingInfo";
+import SuccessPage from "./pages/SuccessPage";
 
 function App() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/success" element={<SuccessPage/>}/>
       <Route element={<RequireAuth />}>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<ProductList />} />

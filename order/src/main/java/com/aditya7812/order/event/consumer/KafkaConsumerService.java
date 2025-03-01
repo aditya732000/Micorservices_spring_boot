@@ -1,4 +1,4 @@
-package com.aditya7812.order.event.consumer;
+/*package com.aditya7812.order.event.consumer;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -29,4 +29,4 @@ public class KafkaConsumerService {
             System.out.println("✅ Order " + orderId + " status updated to PAID");
         });
     }
-}
+}*/

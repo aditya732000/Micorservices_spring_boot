@@ -1,6 +1,6 @@
 package com.aditya7812.products_service.filters;
 
-import io.jsonwebtoken.Claims;
+/*import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 
@@ -38,4 +38,4 @@ public class JwtUtil {
         String userId = claims.get("userId").toString();
         return userId;
     }
-}
+}*/

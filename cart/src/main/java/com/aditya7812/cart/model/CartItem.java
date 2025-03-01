@@ -29,4 +29,6 @@ public class CartItem {
     @Column(nullable = false)
     private BigDecimal price; // Price at the time of adding to cart
 
+    private String sellerId;
+
 }

@@ -15,7 +15,7 @@ export default function ProductDetails() {
   }
 
   const handleAddToCart =async () => {
-    const response = await addItemToCart({productId: product?.id, quantity:1, price: product.price})
+    const response = await addItemToCart({productId: product?.id, quantity:1, price: product.price, sellerId: product.sellerId})
     console.log(response)
 
   }
@@ -26,7 +26,7 @@ export default function ProductDetails() {
       <p className="text-gray-600 mb-4">{product.description}</p>
       <p className="text-gray-800 mb-2">Category: {product.category}</p>
       <p className="text-gray-800 mb-2">Price: ${product.price}</p>
-      <p className="text-gray-800 mb-2">Stock: {product.stockQuantity}</p>
+      <p className="text-gray-800 mb-2">Stock: {product.quantity}</p>
       <div>
       <button 
           onClick={handleAddToCart} 

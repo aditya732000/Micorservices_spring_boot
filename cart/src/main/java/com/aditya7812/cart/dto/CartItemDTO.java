@@ -19,4 +19,6 @@ public class CartItemDTO {
 
     @NotNull(message = "Price is required")
     private BigDecimal price;
+
+    private String sellerId;
 }
