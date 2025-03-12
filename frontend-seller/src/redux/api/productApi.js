@@ -6,6 +6,7 @@ export const productApi = apiSlice.injectEndpoints({
         url: "product/create",
         method: "POST",
         body: data,
+        formData: true
       }),
     }),
     listProducts: builder.query({

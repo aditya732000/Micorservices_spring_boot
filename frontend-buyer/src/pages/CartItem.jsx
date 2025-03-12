@@ -1,6 +1,5 @@
-/* eslint-disable react/prop-types */
-import React from 'react'
 
+/* eslint-disable react/prop-types */
 export default function CartItem({cartItem}) {
   return (
     <div key={cartItem.productId} className="border-b py-4">

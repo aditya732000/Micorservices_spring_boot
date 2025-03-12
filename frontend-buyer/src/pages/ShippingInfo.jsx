@@ -11,7 +11,6 @@ const ShippingInfo = () => {
         fullName: "",
         address: "",
         city: "",
-        state: "",
         zipCode: "",
     });
 
@@ -27,6 +26,7 @@ const ShippingInfo = () => {
             shippingInfo: shippingDetails,
             orderItems: selectedProducts.map(product => ({
                 productId: product.productId,
+                name: product.name,
                 quantity: product.quantity,
                 price: product.price
             }))
@@ -37,11 +37,12 @@ const ShippingInfo = () => {
             const orderItems = response.map(order => ({
                 orderId: order.id,
                 productId: order.productId,
+                name: order.name,
                 quantity: order.quantity,
                 price: order.price
             }));
 
-            const stripe = await loadStripe("pk_test_51OPRpGSFQ7VcCJN2VrENXikLBJ6WYmf8B1rxz67aNPSpEXjubzu1TenBp6626vOAH6x4BC7wbW0Sh2FYWx5a558v00SLewJ8HH");
+            const stripe = await loadStripe("pk_test_51OPRpGSFQ7VcCJN2PjmgWArUMwY2PDIZz77RYfBV8NLRKou5XTr5gY7wLTrBoZQAa4tKPjNdNJcc5YBSU2XhtmGP00qgPaNuCK");
             const checkoutResponse = await createCheckoutSession(orderItems).unwrap();
 
             await stripe.redirectToCheckout({ sessionId: checkoutResponse.id });
@@ -57,9 +58,8 @@ const ShippingInfo = () => {
                 <input type="text" name="fullName" placeholder="Full Name" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <input type="text" name="address" placeholder="Address" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <input type="text" name="city" placeholder="City" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                <input type="text" name="state" placeholder="State" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
                 <input type="text" name="zipCode" placeholder="Zip Code" required onChange={handleChange} className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
-                <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition duration-300">Place Order</button>
+                <button type="submit" className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-md transition duration-300 cursor-pointer">Place Order</button>
             </form>
         </div>
     );

@@ -24,6 +24,9 @@ public class CartItem {
     private String productId; // Product being added
 
     @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private int quantity;
 
     @Column(nullable = false)

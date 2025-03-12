@@ -37,6 +37,6 @@ public class Product {
 
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    private String image_url = "vdnd";
+    private String image_url;
 }
 

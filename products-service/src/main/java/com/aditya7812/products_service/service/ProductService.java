@@ -1,10 +1,13 @@
 package com.aditya7812.products_service.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,22 +22,33 @@ import com.aditya7812.products_service.repository.ProductRepository;
 public class ProductService {
     private final ProductRepository productRepo;
 
-    public ProductService(ProductRepository productRepo) {
+    private final CloudinaryService cloudinaryService;
+
+    public ProductService(ProductRepository productRepo, CloudinaryService cloudinaryService) {
         this.productRepo = productRepo;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public List<Product> getAllProducts() {
         return productRepo.findAll();
     }
-    public Product createProduct(ProductDTO dto, String userId) {
-        Product product = new Product();
-        product.setName(dto.getName());
-        product.setDescription(dto.getDescription());
-        product.setPrice(dto.getPrice());
-        product.setQuantity(dto.getQuantity());
-        product.setCategory(dto.getCategory());
-        product.setSellerId(userId);
-        return productRepo.save(product);
+    public ResponseEntity<Product> createProduct(ProductDTO dto, String userId) {
+        try {
+            String imageUrl = cloudinaryService.uploadImage(dto.getImage());
+            Product product = new Product();
+            product.setName(dto.getName());
+            product.setDescription(dto.getDescription());
+            product.setPrice(dto.getPrice());
+            product.setQuantity(dto.getQuantity());
+            product.setCategory(dto.getCategory());
+            product.setSellerId(userId);
+            product.setImage_url(imageUrl);
+            return ResponseEntity.ok(productRepo.save(product));
+            // return ResponseEntity.ok("Product Created Successfully");
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().build();
+            //return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving product");
+        }
     }
     public List<Product> getSellerProducts(String sellerId) {
         return productRepo.findBySellerId(sellerId);
@@ -96,6 +110,10 @@ public class ProductService {
         } else {
             System.out.println("❌ Product not found with ID: " + productId);
         }
+    }
+
+    public List<Product> searchProducts(String keyword) {
+        return productRepo.searchByName(keyword);
     }
 
 }

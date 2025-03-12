@@ -28,6 +28,7 @@ public class CartService {
             CartItem newCartItem = new CartItem();
             newCartItem.setUserId(userId);
             newCartItem.setProductId(dto.getProductId());
+            newCartItem.setName(dto.getName());
             newCartItem.setQuantity(dto.getQuantity());
             newCartItem.setPrice(dto.getPrice());
             newCartItem.setSellerId(dto.getSellerId());

@@ -1,4 +1,4 @@
-/*package com.aditya7812.order.event.consumer;
+package com.aditya7812.order.event.consumer;
 
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,6 @@ public class KafkaConsumerService {
     public void handlePaymentSuccess(String orderId) {
         System.out.println("✅ Payment successful for Order ID: " + orderId);
 
-        // Find the order by orderId and update status to "PAID"
         Optional<Order> orderOpt = orderRepository.findById(Long.parseLong(orderId));
         orderOpt.ifPresent(order -> {
             order.setStatus("PAID");
@@ -29,4 +28,4 @@ public class KafkaConsumerService {
             System.out.println("✅ Order " + orderId + " status updated to PAID");
         });
     }
-}*/
+}

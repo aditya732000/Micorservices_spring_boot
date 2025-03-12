@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useGetOrdersQuery } from "../redux/api/orderApi";
+import { useMyOrdersQuery } from "../redux/api/orderApi";
 
 const MyOrders = () => {
-    const { data: orders, error, isLoading } = useGetOrdersQuery();
-    const user = useSelector(state => state.auth.user);
+    const { data: orders, error, isLoading } = useMyOrdersQuery();
 
     if (isLoading) return <div className="text-center mt-10">Loading orders...</div>;
     if (error) return <div className="text-center mt-10 text-red-500">Error fetching orders</div>;

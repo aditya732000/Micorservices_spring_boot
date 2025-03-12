@@ -11,16 +11,18 @@ export const orderApi = apiSlice.injectEndpoints({
       }),
     }),
     
-    removeCartItem: builder.mutation({
-        query: (id) => ({
-            url: `cart/${id}`,
-            method: "DELETE"
-        })
-    }),
+
+    myOrders: builder.query({
+      query: () => ({
+        url: "order/my-orders",
+        transformResponse: (response, meta, arg) => response.data,
+      })
+    })
 
   }),
 });
 
 export const {
-    useCreateOrderMutation
+    useCreateOrderMutation,
+    useMyOrdersQuery
 } = orderApi;

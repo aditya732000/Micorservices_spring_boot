@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { useCreateProductMutation } from '../redux/api/productApi';
+import { Upload } from "lucide-react";
 
 export default function CreateProduct() {
+
   const [product, setProduct] = useState({
     name: '',
     description: '',
     category: '',
     price: '',
     quantity: '',
+    image: null
   });
 
   const [createProduct] = useCreateProductMutation()
@@ -16,11 +19,24 @@ export default function CreateProduct() {
     setProduct({ ...product, [e.target.name]: e.target.value });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setProduct({ ...product, image: file });
+};
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await createProduct(product)
-      console.log('Product Created:', response);
+      const formData = new FormData();
+      formData.append("name", product.name);
+      formData.append("description", product.description);
+      formData.append("price", product.price);
+      formData.append("category", product.category);
+      formData.append("quantity", product.quantity);
+      formData.append("image", product.image);
+      const response = await createProduct(formData);
+      console.log('Product Created:', response.data);
     } catch (error) {
       console.error('Error:', error);
     }
@@ -78,6 +94,23 @@ export default function CreateProduct() {
             onChange={handleChange} 
             className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
           />
+        </div>
+        <div className="mb-4">
+          <input 
+            type="file" 
+            name="image"
+            accept='image/*' 
+            onChange={handleFileChange}
+            id="image-upload" 
+            className="hidden"
+          />
+          <label
+            htmlFor="image-upload"
+            className="flex items-center space-x-2 px-4 py-2 bg-blue-400 text-white rounded-lg cursor-pointer hover:bg-blue-700 transition"
+          >
+            <Upload className="w-5 h-5" />
+            <span>Upload Image</span>
+          </label>
         </div>
         <button 
           type="submit" 

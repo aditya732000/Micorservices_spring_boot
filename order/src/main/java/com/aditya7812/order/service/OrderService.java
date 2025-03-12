@@ -25,6 +25,7 @@ public class OrderService {
             Order order = new Order();
             order.setUserId(userId);
             order.setProductId(item.getProductId());
+            order.setName(item.getName());
             order.setPrice(item.getPrice());
             order.setQuantity(item.getQuantity());
             order.setFullName(request.getShippingInfo().getFullName());
@@ -40,21 +41,9 @@ public class OrderService {
 
         return createdOrders;
 
-        // Call Inventory Service to check stock
-        /*boolean stockAvailable = inventoryClient.checkStock(request.getProductId(), request.getQuantity());
+    }
 
-        if (!stockAvailable) {
-            throw new RuntimeException("Stock unavailable!");
-        }
-
-        Order order = new Order();
-        order.setStatus("PENDING");
-
-        Order orderOutput = orderRepository.save(order);
-
-        // Publish event to Kafka
-        kafkaTemplate.send("order.placed", orderOutput.getId());
-
-        return order;*/
+    public List<Order> getUserOrders(String userId) {
+        return orderRepository.findByUserId(userId);
     }
 }

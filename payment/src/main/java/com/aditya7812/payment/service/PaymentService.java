@@ -6,6 +6,8 @@ import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 
+import io.github.cdimascio.dotenv.Dotenv;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +16,12 @@ import java.util.*;
 @Service
 public class PaymentService {
 
-    @Value("${stripe.api.key}")
     private String stripeApiKey;
+
+    public PaymentService() {
+        Dotenv dotEnv = Dotenv.configure().ignoreIfMissing().load();
+        this.stripeApiKey = dotEnv.get("STRIPE_API_KEY");
+    }
 
     public Map<String, String> createCheckoutSession(List<OrderItem> dto) throws StripeException {
         Stripe.apiKey = stripeApiKey;
@@ -34,7 +40,7 @@ public class PaymentService {
                             .setCurrency("inr")
                             .setUnitAmount(dto.get(i).getPrice()) // Price in cents
                             .setProductData(SessionCreateParams.LineItem.PriceData.ProductData.builder()
-                                .setName(dto.get(i).getProductId())
+                                .setName(dto.get(i).getName())
                                 .putAllMetadata(metadata)
                                 .build())
                             .build())

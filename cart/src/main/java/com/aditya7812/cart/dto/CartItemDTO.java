@@ -13,6 +13,9 @@ public class CartItemDTO {
     @NotBlank(message = "Product ID is required")
     private String productId;
 
+    @NotBlank(message = "Product Name is required")
+    private String name;
+
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")
     private int quantity;

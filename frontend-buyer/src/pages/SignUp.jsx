@@ -21,17 +21,20 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const result = await signup(formData)
-    dispatch(setCredentials(result.token))
-    console.log(result)
+    try {
+      const result = await signup(formData).unwrap()
+      dispatch(setCredentials(result.token))
+      console.log(result)
+    } catch (error) {
+      console.log("An Error occured: ", error)
+    }
 
-    console.log(formData);
   };
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">Seller Sign Up</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-800 mb-6">User Sign Up</h2>
         <form onSubmit={handleSubmit}>
         <div className="mb-4">
             <label className="block text-gray-700 text-sm font-medium mb-2">Name</label>

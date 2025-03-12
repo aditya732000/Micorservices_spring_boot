@@ -7,24 +7,33 @@ export default function ProductList() {
     return <p>Loading...</p>
   }
 
+  if (!products) {
+    return <p>No Products Available</p>
+  }
+
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-xl">
-      <h2 className="text-2xl font-bold mb-6">Product List</h2>
-      {products.length > 0 ? (
-        <ul>
-          {products.map((product) => (
-            <Link to={`/product/${product.id}`} key={product.price} className="block border-b py-4">
-              <h3 className="text-lg font-semibold">{product.name}</h3>
-              <p className="text-gray-600">{product.description}</p>
-              <p className="text-gray-800">Category: {product.category}</p>
-              <p className="text-gray-800">Price: ${product.price}</p>
-              <p className="text-gray-800">Stock: {product.quantity}</p>
-            </Link>
-          ))}
-        </ul>
-      ) : (
-        <p className="text-gray-600">No products available.</p>
-      )}
+    <div className="container mx-auto p-6">
+    <h1 className="text-3xl font-bold text-center mb-6">Our Products</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <Link
+            key={product.id}
+            className="border rounded-lg shadow-lg p-4 bg-white hover:shadow-xl transition block"
+            to={`/product/${product.id}`}
+          >
+            <img
+              src={product.image_url}
+              alt={product.name}
+              className="w-full h-48 object-cover rounded-md"
+            />
+            <h2 className="text-xl font-semibold mt-4">{product.name}</h2>
+            <p className="text-gray-500 mt-2">{product.description}</p>
+            <p className="text-lg font-bold mt-3 text-blue-500">
+              ${product.price}
+            </p>
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

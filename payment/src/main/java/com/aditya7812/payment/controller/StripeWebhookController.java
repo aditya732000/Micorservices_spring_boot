@@ -10,6 +10,7 @@ import com.stripe.model.Product;
 import com.stripe.model.checkout.Session;
 import com.stripe.net.Webhook;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,14 +28,19 @@ import java.util.Map;
 @RequestMapping("/api/payment/webhook")
 public class StripeWebhookController {
 
-    @Value("${stripe.api.key}")
+
     private String stripeApiKey;
 
-    @Value("${stripe.webhook.secret}")
     private String webhookSecret;
 
     @Autowired
     public KafkaProducerService kafkaProducer;
+
+    public StripeWebhookController() {
+        Dotenv dotEnv = Dotenv.configure().ignoreIfMissing().load();
+        this.stripeApiKey = dotEnv.get("STRIPE_API_KEY");
+        this.webhookSecret = dotEnv.get("STRIPE_WEBHOOK_SECRET");
+    }
 
     @PostConstruct
     public void init() {

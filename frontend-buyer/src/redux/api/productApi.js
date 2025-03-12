@@ -15,6 +15,14 @@ export const productApi = apiSlice.injectEndpoints({
       })
     }),
 
+    searchProducts: builder.query({
+      query: (query) => ({
+        url: `product/search?query=${query}`,
+        transformResponse: (response, meta, arg) => response.data,
+
+      })
+    }),
+
     checkStockAvailability: builder.mutation({
       query: (stockRequest) => ({
         url: "product/check-stock",
@@ -30,5 +38,6 @@ export const productApi = apiSlice.injectEndpoints({
 export const {
   useListProductsQuery,
   useProductDetailsQuery,
-  useCheckStockAvailabilityMutation
+  useCheckStockAvailabilityMutation,
+  useSearchProductsQuery
 } = productApi;

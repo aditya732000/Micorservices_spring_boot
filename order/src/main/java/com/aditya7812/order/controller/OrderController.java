@@ -23,4 +23,9 @@ public class OrderController {
     public ResponseEntity<List<Order>> createOrder(@RequestHeader String userId, @RequestBody OrderRequest request) {
         return ResponseEntity.ok(orderService.createOrder(userId, request));
     }
+
+    @GetMapping("/my-orders")
+    public ResponseEntity<List<Order>> getMyOrders(@RequestHeader String userId) {
+        return ResponseEntity.ok(orderService.getUserOrders(userId));
+    }
 }

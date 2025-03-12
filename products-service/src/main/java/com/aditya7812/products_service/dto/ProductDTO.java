@@ -8,6 +8,8 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 
+import org.springframework.web.multipart.MultipartFile;
+
 @Data
 public class ProductDTO {
     
@@ -18,7 +20,7 @@ public class ProductDTO {
     private String description;
 
     @NotNull(message = "Price is required")
-    @Min(value = 0, message = "Price must be greater than 0")
+    @Min(value = 1, message = "Price must be greater than 0")
     private BigDecimal price;
 
     @Min(value = 0, message = "Stock must be non-negative")
@@ -26,6 +28,8 @@ public class ProductDTO {
 
     @NotBlank(message = "Category is required")
     private String category;
+
+    private MultipartFile image;
 
 }
 

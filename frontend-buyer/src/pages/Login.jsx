@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import {useDispatch} from 'react-redux'
 import { setCredentials } from '../redux/slices/authSlice';
 import { useLoginMutation } from '../redux/api/authApi';
+import { redirect } from 'react-router';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -13,9 +14,14 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    const result = await login({email, password})
-    console.log(result)
-    dispatch(setCredentials(result.data.token))
+    try {
+      const result = await login({email, password}).unwrap()
+      console.log(result)
+      dispatch(setCredentials(result.data.token))
+      redirect("/")
+    } catch (error) {
+      console.log("An Error Occured", error)
+    }
   }
 
   return (
